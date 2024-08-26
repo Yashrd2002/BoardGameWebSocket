@@ -14,7 +14,7 @@ Frontend setup:
 
     add .env file in /client/
 
-        BACKEND_URL="ws://localhost:8000"
+        BACKEND_URL="ws://localhost:8600"
     
     Run backend:
         npm run dev
