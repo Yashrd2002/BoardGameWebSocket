@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Board = ({ board = [], currentPlayer, spectate, onPlacePiece }) => {
+const Board = ({ board = [], currentPlayer, spectate }) => {
   const [selectedPiece, setSelectedPiece] = useState(null);
 
   const handleCellClick = (row, col) => {
@@ -95,11 +95,11 @@ const Board = ({ board = [], currentPlayer, spectate, onPlacePiece }) => {
   };
 
   const validMoves = getValidMoves();
-
+  
   return (
     <div className=" inline-block m-[20px]">
       <h2 className="text-lg text-[#b3a6a6]">
-        Current Player: {currentPlayer}
+        Current Player: <span className={`${currentPlayer==="A"?"text-red-500":"text-blue-500"}`}>{currentPlayer}</span>
       </h2>
       {board.map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
@@ -112,7 +112,7 @@ const Board = ({ board = [], currentPlayer, spectate, onPlacePiece }) => {
                 )
                   ? "bg-green-400 cursor-pointer text-black"
                   : ""
-              }`}
+              } ${cell?.charAt(0)==="A"?"text-red-500":"text-blue-500"}`}
               onClick={() => handleCellClick(rowIndex, colIndex)}
             >
               {cell || ""}

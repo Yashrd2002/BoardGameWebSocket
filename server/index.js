@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
-const { initialState, makeMove } = require('./gameLogic'); // Assume you have gameLogic with initialState and makeMove
+const { initialState, makeMove } = require('./gameLogic');
 
 const app = express();
 const server = http.createServer(app);
@@ -18,7 +18,7 @@ wss.on('connection', (ws) => {
             if (data.type === 'join') {
                 const room = data.room;
                 if (!rooms[room]) {
-                    rooms[room] = { ...initialState }; // Initialize room state if it doesn't exist
+                    rooms[room] = { ...initialState };
                 }
                 ws.room = room;
                 ws.send(JSON.stringify({ type: 'update', gameState: rooms[room] }));
@@ -28,7 +28,6 @@ wss.on('connection', (ws) => {
                 if (data.type === 'move') {
                     const move = data.move;
                     rooms[ws.room] = makeMove(rooms[ws.room], move);
-                    // Broadcast the updated state to all clients in the room
                     wss.clients.forEach((client) => {
                         if (client.readyState === WebSocket.OPEN && client.room === ws.room) {
                             client.send(JSON.stringify({ type: 'update', gameState: rooms[ws.room] }));
@@ -36,7 +35,6 @@ wss.on('connection', (ws) => {
                     });
                 } else if (data.type === 'reset') {
                     rooms[ws.room] = { ...initialState };
-                    // Broadcast the reset state to all clients in the room
                     wss.clients.forEach((client) => {
                         if (client.readyState === WebSocket.OPEN && client.room === ws.room) {
                             client.send(JSON.stringify({ type: 'update', gameState: rooms[ws.room] }));

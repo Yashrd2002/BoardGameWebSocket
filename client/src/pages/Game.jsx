@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import History from "../components/History";
 import Board from "../components/Board";
 
@@ -41,6 +41,7 @@ const Game = () => {
   return (
     <div className="text-center p-[20px] bg-black min-h-screen text-white roboto-regular">
       <h1 className="text-[40px] roboto-medium">Board Game</h1>
+      <h1 className="text-lg text-[#6f6969] mt-5">Current Room Number : {room} <Link to={"/"} className="text-blue-500 text-sm ml-4">Join another room</Link></h1>
       <Board
         board={gameState.board}
         currentPlayer={gameState.currentPlayer}
@@ -70,6 +71,7 @@ const Game = () => {
   
         </div>
       )}
+
     </div>
   );
 };
