@@ -1,52 +1,56 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
-const { initialState, makeMove } = require('./gameLogic');
+const { initialState, makeMove } = require('./gameLogic'); // Assume you have gameLogic with initialState and makeMove
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 app.use(express.static('../client/build'));
 
-let gameState = { ...initialState };
+const rooms = {};
 
 wss.on('connection', (ws) => {
     ws.on('message', (message) => {
-        console.log('Received message:', message);
         try {
             const data = JSON.parse(message);
 
-            if (data.type === 'move') {
-                const move = data.move;
-                if (
-                    typeof move.fromRow !== 'number' ||
-                    typeof move.fromCol !== 'number' ||
-                    typeof move.toRow !== 'number' ||
-                    typeof move.toCol !== 'number'
-                ) {
-                    throw new Error('Invalid move format');
+            if (data.type === 'join') {
+                const room = data.room;
+                if (!rooms[room]) {
+                    rooms[room] = { ...initialState }; // Initialize room state if it doesn't exist
                 }
-
-                console.log('Parsed move:', move);
-
-                gameState = makeMove(gameState, move);
-
-            } else if (data.type === 'reset') {
-                gameState = { ...initialState };
-            } else {
-                throw new Error('Unknown message type');
+                ws.room = room;
+                ws.send(JSON.stringify({ type: 'update', gameState: rooms[room] }));
             }
-            wss.clients.forEach((client) => {
-                if (client.readyState === WebSocket.OPEN) {
-                    client.send(JSON.stringify(gameState));
+
+            if (ws.room && rooms[ws.room]) {
+                if (data.type === 'move') {
+                    const move = data.move;
+                    rooms[ws.room] = makeMove(rooms[ws.room], move);
+                    // Broadcast the updated state to all clients in the room
+                    wss.clients.forEach((client) => {
+                        if (client.readyState === WebSocket.OPEN && client.room === ws.room) {
+                            client.send(JSON.stringify({ type: 'update', gameState: rooms[ws.room] }));
+                        }
+                    });
+                } else if (data.type === 'reset') {
+                    rooms[ws.room] = { ...initialState };
+                    // Broadcast the reset state to all clients in the room
+                    wss.clients.forEach((client) => {
+                        if (client.readyState === WebSocket.OPEN && client.room === ws.room) {
+                            client.send(JSON.stringify({ type: 'update', gameState: rooms[ws.room] }));
+                        }
+                    });
+                } else {
+                    console.log('Unknown message type');
                 }
-            });
+            }
         } catch (error) {
             console.error('Error processing message:', error);
             ws.send(JSON.stringify({ error: error.message }));
         }
     });
-    ws.send(JSON.stringify(gameState));
 });
 
 server.listen(8000, () => {

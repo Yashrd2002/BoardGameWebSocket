@@ -69,9 +69,9 @@ function makeMove(state, move) {
   
 
   const pieceType = getPieceType(piece);
-  console.log(
-    isValidMove(board, fromRow, fromCol, toRow, toCol, pieceType, currentPlayer)
-  );
+  // console.log(
+  //   isValidMove(board, fromRow, fromCol, toRow, toCol, pieceType, currentPlayer)
+  // );
 
   if (
     !isValidMove(
@@ -113,7 +113,8 @@ function makeMove(state, move) {
 
     let checkRow = fromRow + stepRow;
     let checkCol = fromCol + stepCol;
-
+    
+    
     while (checkRow !== toRow || checkCol !== toCol) {
         if (newBoard[checkRow][checkCol] && newBoard[checkRow][checkCol][0] !== currentPlayer[0]) {
             newBoard[checkRow][checkCol] = null;
@@ -130,7 +131,7 @@ function makeMove(state, move) {
 
   const moveHistory = [
     ...state.moveHistory,
-    `Player ${currentPlayer} moved from [${fromRow}, ${fromCol}] to [${toRow}, ${toCol}]`,
+    `Player ${currentPlayer} ${piece} moved from [${fromRow}, ${fromCol}] to [${toRow}, ${toCol}]`,
   ];
 
   const winner = checkGameOver(newBoard);

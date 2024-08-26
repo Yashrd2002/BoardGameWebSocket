@@ -1,11 +1,11 @@
 import React from 'react';
 
-const MoveHistory = ({ history }) => {
+const History = ({ history }) => {
     return (
         <div className=" text-left m-[20px]">
             <h3>Move History</h3>
             <ul>
-                {history.map((move, index) => (
+                {history?.map((move, index) => (
                     <li key={index}>{move}</li>
                 ))}
             </ul>
@@ -13,4 +13,4 @@ const MoveHistory = ({ history }) => {
     );
 };
 
-export default MoveHistory;
+export default History;
