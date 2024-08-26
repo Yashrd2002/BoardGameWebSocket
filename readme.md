@@ -6,7 +6,7 @@ Backend setup:
 
     ```
 
-    Run backend:
+Run backend:
 
     ```
     node index.js
@@ -22,13 +22,14 @@ Frontend setup:
 
     ```
 
-    Create a .env file in /client/
+Create a .env file in /client/
 
     ```
     BACKEND_URL=ws://localhost:8000
+
     ```
         
-    Run Frontend:
+Run Frontend:
 
     ```
     npm run dev
