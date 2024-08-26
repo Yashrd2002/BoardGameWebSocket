@@ -97,7 +97,7 @@ const Board = ({ board = [], currentPlayer, spectate }) => {
   const validMoves = getValidMoves();
   
   return (
-    <div className=" inline-block m-[20px]">
+    <div className=" inline-block md:m-[20px] mt-6">
       <h2 className="text-lg text-[#b3a6a6]">
         Current Player: <span className={`${currentPlayer==="A"?"text-red-500":"text-blue-500"}`}>{currentPlayer}</span>
       </h2>
@@ -106,7 +106,7 @@ const Board = ({ board = [], currentPlayer, spectate }) => {
           {row.map((cell, colIndex) => (
             <button
               key={colIndex}
-              className={`w-[60px] h-[60px] text-xl border m-[2px] border-[#ffffff57] ${
+              className={`md:w-[60px] md:h-[60px] w-[50px] h-[50px] md:text-xl border m-[2px] border-[#ffffff57] ${
                 validMoves?.some(
                   (move) => move.row === rowIndex && move.col === colIndex
                 )
