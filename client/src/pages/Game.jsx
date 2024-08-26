@@ -11,7 +11,7 @@ const Game = () => {
   
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000");
+    const ws = new WebSocket("https://boardgamewebsocket.onrender.com");
     ws.onopen = () => {
       ws.send(JSON.stringify({ type: "join", room }));
     };
