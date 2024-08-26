@@ -54,15 +54,17 @@ const Game = () => {
         currentPlayer={gameState.currentPlayer}
         spectate={spectate}
       />
-      {gameState.gameOver && !spectate && (
+      {gameState.gameOver && (
         <div className="md:mt-[20px] mt-[10px]">
           <h2 className="text-xl">Game Over! {gameState.winner} Wins! 🎉</h2>
-          <button
-            onClick={handleReset}
-            className="bg-[#cbe72c] px-2 p-1 mt-4 text-black roboto-medium"
-          >
-            Start New Game
-          </button>
+          {!spectate && (
+            <button
+              onClick={handleReset}
+              className="bg-[#cbe72c] px-2 p-1 mt-4 text-black roboto-medium"
+            >
+              Start New Game
+            </button>
+          )}
         </div>
       )}
       {spectate && (
