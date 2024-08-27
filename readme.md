@@ -25,7 +25,7 @@ Frontend setup:
 Create a .env file in /client/
 
     ```
-    BACKEND_URL=ws://localhost:8600
+    VITE_BACKEND_URL=ws://localhost:8600
 
     ```
         
