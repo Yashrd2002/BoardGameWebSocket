@@ -52,5 +52,5 @@ wss.on('connection', (ws) => {
 });
 
 server.listen(8600, () => {
-    console.log('Server is running on port 8000');
+    console.log('Server is running on port 8600');
 });
